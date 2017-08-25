@@ -37,12 +37,9 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.btn_Register)
     Button mBtnRegister;
     private ActivityUtils mActivityUtils;
-
     private String comfirm;
     private String passWord;
     private String userName;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
