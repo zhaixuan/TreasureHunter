@@ -1,7 +1,10 @@
 package com.zhuoxin.treasurehunter.treasurehunter.user.login;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -11,10 +14,13 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.zhuoxin.treasurehunter.treasurehunter.MainActivity;
 import com.zhuoxin.treasurehunter.treasurehunter.R;
 import com.zhuoxin.treasurehunter.treasurehunter.commons.ActivityUtils;
 import com.zhuoxin.treasurehunter.treasurehunter.commons.RegexUtils;
 import com.zhuoxin.treasurehunter.treasurehunter.custom.AlertDialogFragment;
+import com.zhuoxin.treasurehunter.treasurehunter.map.HomeActivity;
+import com.zhuoxin.treasurehunter.treasurehunter.user.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +30,7 @@ import butterknife.OnClick;
  * Created by Dionysus on 2017/8/25.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginView{
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.et_Username)
@@ -37,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityUtils mActivityUtils;
     private String passWord;
     private String userName;
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +104,33 @@ public class LoginActivity extends AppCompatActivity {
             mFragment.show(getSupportFragmentManager(), "password");
             return;
         }
-        // TODO: 20/8/25
-        mActivityUtils.showToast("登录成功！");
+        User mUser = new User();
+        mUser.setUserName(userName);
+        mUser.setPassword(passWord);
+        new LoginPresenter(this).login(mUser);
+    }
+    //--------------------------实现自视图接口的方法------------------------------
+    @Override
+    public void showProgress() {
+        mProgressDialog = ProgressDialog.show(this,"登录","正在玩命登录中...");
+    }
+
+    @Override
+    public void hideProgress() {
+        if (mProgressDialog != null){
+            mProgressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        mActivityUtils.showToast(msg);
+    }
+
+    @Override
+    public void navigateToHome() {
+        mActivityUtils.startActivity(HomeActivity.class);
+        finish();
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MainActivity.MAIN_ACTION));
     }
 }

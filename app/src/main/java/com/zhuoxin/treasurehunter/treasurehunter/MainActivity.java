@@ -1,6 +1,11 @@
 package com.zhuoxin.treasurehunter.treasurehunter;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -13,7 +18,14 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String MAIN_ACTION = "main_action";
     private ActivityUtils mActivityUtils;
+    BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mActivityUtils = new ActivityUtils(this);
+
+        IntentFilter mFilter = new IntentFilter(MAIN_ACTION);
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(mBroadcastReceiver,mFilter);
     }
 
     @OnClick({R.id.btn_Register, R.id.btn_Login})
@@ -33,5 +48,11 @@ public class MainActivity extends AppCompatActivity {
                 mActivityUtils.startActivity(LoginActivity.class);
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(mBroadcastReceiver);
     }
 }

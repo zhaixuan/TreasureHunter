@@ -1,8 +1,10 @@
 package com.zhuoxin.treasurehunter.treasurehunter.user.register;
 
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -12,10 +14,13 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.zhuoxin.treasurehunter.treasurehunter.MainActivity;
 import com.zhuoxin.treasurehunter.treasurehunter.R;
 import com.zhuoxin.treasurehunter.treasurehunter.commons.ActivityUtils;
 import com.zhuoxin.treasurehunter.treasurehunter.commons.RegexUtils;
 import com.zhuoxin.treasurehunter.treasurehunter.custom.AlertDialogFragment;
+import com.zhuoxin.treasurehunter.treasurehunter.map.HomeActivity;
+import com.zhuoxin.treasurehunter.treasurehunter.user.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +30,7 @@ import butterknife.OnClick;
  * Created by Dionysus on 2017/8/25.
  */
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements RegisterView{
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.et_Username)
@@ -37,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.btn_Register)
     Button mBtnRegister;
     private ActivityUtils mActivityUtils;
+    private ProgressDialog mProgressDialog;
     private String comfirm;
     private String passWord;
     private String userName;
@@ -109,7 +115,33 @@ public class RegisterActivity extends AppCompatActivity {
             mFragment.show(getSupportFragmentManager(),"comfirm");
             return;
         }
-        // TODO: 2017/8/25
-        mActivityUtils.showToast("注册成功");
+        User mUser = new User();
+        mUser.setUserName(userName);
+        mUser.setPassword(passWord);
+        new RegisterPresenter(this).register(mUser);
+    }
+    //--------------------------实现自视图接口的方法------------------------------
+    @Override
+    public void showProgress() {
+        mProgressDialog = ProgressDialog.show(this,"注册","正在给你注册呢，不着急...");
+    }
+
+    @Override
+    public void hideProgress() {
+        if (mProgressDialog != null){
+            mProgressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        mActivityUtils.showToast(msg);
+    }
+
+    @Override
+    public void navigateToHome() {
+        mActivityUtils.startActivity(HomeActivity.class);
+        finish();
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MainActivity.MAIN_ACTION));
     }
 }
