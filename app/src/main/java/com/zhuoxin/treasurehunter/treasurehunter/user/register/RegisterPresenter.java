@@ -36,6 +36,7 @@ public class RegisterPresenter {
                     }
                     if (userResult.getErrcode()==1){
                         //缓存tokenid
+
                         UserPrefs.getInstance().setTokenid(userResult.getTokenid());
                         //跳转到HomeActivity
                         mRegisterView.navigateToHome();

@@ -4,12 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.zhuoxin.treasurehunter.treasurehunter.commons.ActivityUtils;
+import com.zhuoxin.treasurehunter.treasurehunter.map.HomeActivity;
+import com.zhuoxin.treasurehunter.treasurehunter.user.UserPrefs;
 import com.zhuoxin.treasurehunter.treasurehunter.user.login.LoginActivity;
 import com.zhuoxin.treasurehunter.treasurehunter.user.register.RegisterActivity;
 
@@ -33,7 +36,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mActivityUtils = new ActivityUtils(this);
-
+        //判断是否是第一次登陆
+        SharedPreferences mUserIcon = getSharedPreferences("user_info", MODE_PRIVATE);
+        if (mUserIcon != null){
+            int key_tokenid = mUserIcon.getInt("key_tokenid", 0);
+            if (key_tokenid == UserPrefs.getInstance().getTokenid()){
+                mActivityUtils.startActivity(HomeActivity.class);
+                finish();
+            }
+        }
         IntentFilter mFilter = new IntentFilter(MAIN_ACTION);
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(mBroadcastReceiver,mFilter);
     }

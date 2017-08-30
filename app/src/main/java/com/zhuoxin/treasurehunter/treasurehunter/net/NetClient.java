@@ -33,14 +33,14 @@ public class NetClient {
                 .build();
     }
 
-    public static synchronized NetClient getInstance(){
-        if (mNetClient == null){
+    public static synchronized NetClient getInstance() {
+        if (mNetClient == null) {
             mNetClient = new NetClient();
         }
         return mNetClient;
     }
 
-    public NetAPI getNetAPI(){
+    public NetAPI getNetAPI() {
         return mRetrofit.create(NetAPI.class);
     }
 }
