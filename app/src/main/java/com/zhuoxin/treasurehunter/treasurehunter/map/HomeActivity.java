@@ -51,6 +51,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         mIvUserIcon = ((ImageView) mNavigation.getHeaderView(0).findViewById(R.id.iv_usericon));
+        //将Navigation与Toolbar关联起来
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         //同步状态
         mDrawerToggle.syncState();
@@ -68,25 +69,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
+    @Override//设置侧滑菜单menu的点击事件
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_hide:
+            case R.id.menu_hide://设置埋藏宝藏
                 // TODO: 2017/8/30
                 mActivityUtils.showToast("埋藏宝藏");
                 break;
-            case R.id.menu_my_list:
+            case R.id.menu_my_list://设置列表
                 mActivityUtils.showToast("我的列表");
                 break;
-            case R.id.menu_help:
+            case R.id.menu_help://设置帮助
                 mActivityUtils.showToast("帮助");
                 break;
-            case R.id.menu_logout:
-                UserPrefs.getInstance().clearUser();
-                mActivityUtils.startActivity(MainActivity.class);
+            case R.id.menu_logout://设置退出登录
+                UserPrefs.getInstance().clearUser();//清空用户数据
+                mActivityUtils.startActivity(MainActivity.class);//跳转到主界面
                 break;
         }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);//关闭侧滑菜单
         return false;
     }
 }

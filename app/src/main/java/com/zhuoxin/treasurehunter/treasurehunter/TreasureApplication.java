@@ -2,6 +2,7 @@ package com.zhuoxin.treasurehunter.treasurehunter;
 
 import android.app.Application;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.zhuoxin.treasurehunter.treasurehunter.user.UserPrefs;
 
 
@@ -15,5 +16,6 @@ public class TreasureApplication extends Application {
         super.onCreate();
         //一般进行一些初始化操作
         UserPrefs.init(getApplicationContext());
+        SDKInitializer.initialize(getApplicationContext());
     }
 }
