@@ -16,6 +16,7 @@ import retrofit2.Response;
  */
 
 public class MapFragmentPresenter {
+
     private MapFragmentView mMapFragmentView;
 
     public MapFragmentPresenter(MapFragmentView mapFragmentView) {

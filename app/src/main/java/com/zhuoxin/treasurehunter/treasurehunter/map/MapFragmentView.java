@@ -9,6 +9,8 @@ import java.util.List;
  */
 
 public interface MapFragmentView {
+    //展示宝藏
     void showTreasure(List<Treasure> treasureList);
+    //展示信息
     void  showMessage(String msg);
 }

@@ -54,6 +54,9 @@
         <activity android:name=".user.login.LoginActivity"/>
         <activity android:name=".user.register.RegisterActivity"/>
         <activity android:name=".map.HomeActivity"/>
+        <activity android:name=".treasure.detail.TreasureDetailActivity"/>
+        <activity android:name=".treasure.hide.HideTreasureActivity"/>
+        <activity android:name=".user.account.AccountDetailActivity"/>
     </application>
 
 </manifest>
